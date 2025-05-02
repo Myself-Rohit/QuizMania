@@ -19,4 +19,4 @@ connectDB(process.env.MONGO_URL)
   })
   .catch((err) => console.log(err));
 
-app.use("/auth", authRoute);
+app.use("/api/auth", authRoute);

@@ -4,9 +4,11 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./db/connect.js";
 import authRoute from "./routes/auth.route.js";
+import quizRoute from "./routes/quiz.route.js";
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 dotenv.config();
 const port = process.env.PORT || 3001;
@@ -20,3 +22,4 @@ connectDB(process.env.MONGO_URL)
   .catch((err) => console.log(err));
 
 app.use("/api/auth", authRoute);
+app.use("/api/quiz", quizRoute);

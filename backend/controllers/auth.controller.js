@@ -58,10 +58,12 @@ export const signin = async (req, res) => {
   }
 };
 
-export const logout = async () => {
+export const logout = async (req, res) => {
   try {
-    res.cookie("access_token", null, { expiresIn: Date.now() });
-    res.status(200).json({ message: "Logout successful!" });
+    res
+      .cookie("access_token", null, { expiresIn: Date.now() })
+      .status(200)
+      .json({ message: "Logout successful!" });
   } catch (error) {
     res.status(400).json({ message: error?.message });
   }

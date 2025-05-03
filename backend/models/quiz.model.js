@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const quizSchema = new mongoose.Schema(
   {
+    quizId: {
+      type: String,
+      required: true,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",

@@ -33,7 +33,7 @@ export const createQuiz = async (req, res) => {
 
 export const getAllQuiz = async (req, res) => {
   try {
-    const quizArray = await Quiz.find({});
+    const quizArray = await Quiz.find({}).populate("userId");
     const quizSet = new Set();
     const uniqueQuiz = quizArray.filter((quiz) => {
       if (!quizSet.has(quiz.quizId.toString())) {
@@ -41,6 +41,7 @@ export const getAllQuiz = async (req, res) => {
         return quiz;
       }
     });
+
     res.status(200).json({ data: uniqueQuiz, message: "" });
   } catch (error) {
     res.status(400).json({ message: error.message || "Something went wrong!" });

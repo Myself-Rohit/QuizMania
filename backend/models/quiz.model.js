@@ -2,38 +2,16 @@ import mongoose from "mongoose";
 
 const quizSchema = new mongoose.Schema(
   {
-    quizId: {
-      type: String,
-      required: true,
-    },
-    userId: {
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    question: {
-      type: String,
-      required: true,
-    },
-    answer: {
-      type: String,
-      required: true,
-    },
-    optionA: {
-      type: String,
-      required: true,
-    },
-    optionB: {
-      type: String,
-      required: true,
-    },
-    optionC: {
-      type: String,
-      required: true,
-    },
-    optionD: {
-      type: String,
-      required: true,
-    },
+    question: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question",
+      },
+    ],
   },
   { timestamps: true }
 );

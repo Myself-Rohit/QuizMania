@@ -1,31 +1,14 @@
+import Question from "../models/question.model.js";
 import Quiz from "../models/quiz.model.js";
 
 export const createQuiz = async (req, res) => {
   try {
-    const { quizId } = req.params;
-    const { question, answer, optionA, optionB, optionC, optionD } = req.body;
-    if (!question || !answer || !optionA || !optionB || !optionC || !optionD) {
-      throw new Error("All fields required!");
-    }
-    const options = new Set([optionA, optionB, optionC, optionD]);
-    if (options.size !== 4) {
-      throw new Error("No two options can have same value");
-    }
-    if (!options.has(answer)) {
-      throw new Error("Answer does not exist in options");
-    }
-    const quiz = new Quiz({
-      quizId,
-      userId: req.user,
-      question,
-      answer,
-      optionA,
-      optionB,
-      optionC,
-      optionD,
+    const { userId } = req?.user?._id;
+    const newQuiz = new Quiz({
+      createdBy: userId,
     });
-    await quiz.save();
-    res.status(201).json({ data: quiz, message: "Quiz created sucessfully!" });
+    await newQuiz.save();
+    res.status(200).json({ data: newQuiz });
   } catch (error) {
     res.status(400).json({ message: error.message || "Something went wrong!" });
   }
@@ -33,16 +16,9 @@ export const createQuiz = async (req, res) => {
 
 export const getAllQuiz = async (req, res) => {
   try {
-    const quizArray = await Quiz.find({}).populate("userId");
-    const quizSet = new Set();
-    const uniqueQuiz = quizArray.filter((quiz) => {
-      if (!quizSet.has(quiz.quizId.toString())) {
-        quizSet.add(quiz.quizId.toString());
-        return quiz;
-      }
-    });
+    const quizArray = await Quiz.find({}).populate("question");
 
-    res.status(200).json({ data: uniqueQuiz, message: "" });
+    res.status(200).json({ data: quizArray, message: "" });
   } catch (error) {
     res.status(400).json({ message: error.message || "Something went wrong!" });
   }
@@ -50,17 +26,56 @@ export const getAllQuiz = async (req, res) => {
 
 export const getQuiz = async (req, res) => {
   try {
-    const skip = req.query.page - 1 || 0;
     const { quizId } = req.params;
     if (!quizId) {
       throw new Error("Invalid api call");
     }
-    const quizArray = await Quiz.find({
-      $and: [{ quizId }, { userId: req.user._id }],
-    })
-      .limit(1)
-      .skip(skip);
+    const quizArray = await Question.find({ quizId });
     res.status(200).json({ data: quizArray, message: "" });
+  } catch (error) {
+    res.status(400).json({ message: error.message || "Something went wrong!" });
+  }
+};
+
+export const addQuestion = async (req, res) => {
+  try {
+    const { quizId } = req.params;
+    const { question, options } = req.body;
+    if (!question) {
+      throw new Error("Question is required!");
+    }
+    if (options.length !== 4) {
+      throw new Error("All four options are required!");
+    }
+    const optionSet = new Set([
+      options[0].option,
+      options[1].option,
+      options[2].option,
+      options[3].option,
+    ]);
+    if (optionSet.size !== 4) {
+      throw new Error("No two options can have same value");
+    }
+
+    const newQues = new Question({
+      quizId,
+      question,
+      options,
+    });
+
+    await newQues.save();
+
+    const updateQuiz = await Quiz.findByIdAndUpdate(
+      quizId,
+      {
+        $push: { question: newQues },
+      },
+      { new: true }
+    );
+    await updateQuiz.populate("question");
+    res
+      .status(201)
+      .json({ data: newQues, message: "Quiz created sucessfully!" });
   } catch (error) {
     res.status(400).json({ message: error.message || "Something went wrong!" });
   }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import useGetDashboardQuiz from "../hooks/useGetDashboardQuiz";
+import { Link } from "react-router";
 
 const Dashboard = () => {
   const { data } = useGetDashboardQuiz();
@@ -17,11 +18,13 @@ const Dashboard = () => {
               <div key={quiz._id} className="card bg-base-200 w-96">
                 <div className="card-body">
                   <h2 className="font-semibold">
-                    Created By {quiz?.userId?.userName}
+                    {/* Created By {quiz?.createdBy} */}
                   </h2>
-                  <p className="card-title"> {quiz?.question} </p>
+                  <p className="card-title"> {quiz?.question[0].question} </p>
                   <div className="card-actions justify-end">
-                    <button className="btn">View All</button>
+                    <Link to={`/${quiz._id}`} className="btn">
+                      View All
+                    </Link>
                   </div>
                 </div>
               </div>

@@ -1,35 +1,30 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
-const useGetDashboardQuiz = () => {
+const useGetQuizById = (id) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const navigate = useNavigate();
-  const getDashboardQuiz = async () => {
+  const getQuiz = async () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/quiz`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/quiz/${id}`,
         { withCredentials: true }
       );
-
       if (res.data) {
-        setData(res.data?.data);
-        console.log(res.data.data);
+        setData(res?.data?.data);
       }
     } catch (error) {
-      // navigate("/auth");
       toast.error(error?.response?.data?.message || error?.message);
     } finally {
       setLoading(false);
     }
   };
   useEffect(() => {
-    getDashboardQuiz();
+    getQuiz();
   }, []);
-  return { loading, data };
+  return { loading, data, getQuiz };
 };
 
-export default useGetDashboardQuiz;
+export default useGetQuizById;

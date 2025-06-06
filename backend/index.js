@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./db/connect.js";
 import authRoute from "./routes/auth.route.js";
 import quizRoute from "./routes/quiz.route.js";
+import userRoute from "./routes/user.route.js";
 const app = express();
 app.use(
   cors({
@@ -28,3 +29,4 @@ connectDB(process.env.MONGO_URL)
 
 app.use("/api/auth", authRoute);
 app.use("/api/quiz", quizRoute);
+app.use("/api/user", userRoute);

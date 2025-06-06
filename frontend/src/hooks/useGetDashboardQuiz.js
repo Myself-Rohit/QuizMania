@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
 
 const useGetDashboardQuiz = () => {
   const [loading, setLoading] = useState(false);
@@ -20,8 +19,7 @@ const useGetDashboardQuiz = () => {
         console.log(res.data.data);
       }
     } catch (error) {
-      // navigate("/auth");
-      toast.error(error?.response?.data?.message || error?.message);
+      navigate("/auth");
     } finally {
       setLoading(false);
     }

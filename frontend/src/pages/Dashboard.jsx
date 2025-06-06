@@ -17,10 +17,13 @@ const Dashboard = () => {
             return (
               <div key={quiz._id} className="card bg-base-200 w-96">
                 <div className="card-body">
-                  <h2 className="font-semibold">
-                    {/* Created By {quiz?.createdBy} */}
+                  <h2 className="font-semibold text-gray-500 flex items-center justify-between">
+                    <span>By {quiz?.createdBy?.userName}</span>
+                    <span className="right-0">
+                      {quiz?.questions.length} questions
+                    </span>
                   </h2>
-                  <p className="card-title"> {quiz?.question[0].question} </p>
+                  <p className="card-title"> {quiz?.questions[0].question} </p>
                   <div className="card-actions justify-end">
                     <Link to={`/${quiz._id}`} className="btn">
                       View All

@@ -4,6 +4,7 @@ import useGetQuizById from "../hooks/useGetQuizById";
 const StartQuiz = () => {
   const { quizId } = useParams();
   const { data } = useGetQuizById(quizId);
+  console.log(data);
   return (
     <>
       <div className="navbar bg-base-300 shadow-sm">
@@ -16,8 +17,7 @@ const StartQuiz = () => {
           src="https://cdn1.iconfinder.com/data/icons/elevator/154/elevator-start-function-go-256.png"
         />
       </Link>
-      <div className="text-white text-center mt-20 flex justify-center">
-        <h1 className="text-3xl">Rules:</h1>
+      <div className="text-white text-center mt-20 flex justify-center pb-10">
         <ul className="px-10 max-w-md">
           <li className="mt-5">
             ✅ <strong>Total Questions:</strong> This quiz contain

@@ -8,7 +8,9 @@ const StartQuiz = () => {
   return (
     <>
       <div className="navbar bg-base-300 shadow-sm">
-        <a className="btn btn-ghost text-xl justify-end">QuizMania</a>
+        <Link to="/" className="btn btn-ghost text-xl justify-end">
+          QuizMania
+        </Link>
         <a className="btn btn-ghost text-xl justify-end">setting</a>
       </div>
       <Link to={`/quiz/${quizId}`} className="">

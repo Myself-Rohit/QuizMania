@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import StartQuiz from "./pages/StartQuiz";
 import Quiz from "./pages/QuizPage";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/:quizId" element={<StartQuiz />} />
           <Route path="/quiz/:quizId" element={<Quiz />} />
         </Route>

@@ -82,3 +82,15 @@ export const getQuiz = async (req, res) => {
     res.status(400).json({ message: error.message || "Something went wrong!" });
   }
 };
+
+export const getUserQuiz = async (req, res) => {
+  try {
+    const userId = req?.user?._id;
+    const userQuiz = await Quiz.find({
+      createdBy: userId,
+    }).populate("questions");
+    res.status(200).json({ data: userQuiz, message: "" });
+  } catch (error) {
+    res.status(400).json({ message: error.message || "Something went wrong!" });
+  }
+};

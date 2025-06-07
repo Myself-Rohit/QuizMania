@@ -1,11 +1,35 @@
-import React from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`,
+        { withCredentials: true }
+      );
+
+      if (res.data) {
+        localStorage.setItem("loggedInUser", null);
+        navigate("/auth");
+      }
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message || error?.message || "Failed to Logout"
+      );
+    }
+  };
   return (
     <>
       <div className="navbar bg-base-300 shadow-sm">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">QuizMania</a>
+          <Link to="/" className="btn btn-ghost text-xl">
+            QuizMania
+          </Link>
         </div>
         <div className="flex gap-2">
           <input
@@ -31,16 +55,16 @@ const Header = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
+                <Link to="/profile" className="justify-between">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </Link>
               </li>
               <li>
                 <a>Settings</a>
               </li>
               <li>
-                <a>Logout</a>
+                <button onClick={handleLogout}>Logout</button>
               </li>
             </ul>
           </div>
